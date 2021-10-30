@@ -41,7 +41,6 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     private fun initSensorManager() {
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         accelerometerSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
-        sensorManager.registerListener(this, accelerometerSensor, SensorManager.SENSOR_DELAY_UI)
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -115,6 +114,16 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) = Unit
+
+    override fun onResume() {
+        super.onResume()
+        sensorManager.registerListener(this, accelerometerSensor, SensorManager.SENSOR_DELAY_UI)
+    }
+
+    override fun onPause() {
+        sensorManager.unregisterListener(this)
+        super.onPause()
+    }
 
     companion object {
         private const val TOMATO_SIZE = 140
